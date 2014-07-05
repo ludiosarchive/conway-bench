@@ -1,4 +1,4 @@
-use std::rand::random;
+extern crate rand;
 
 static ROWS: uint = 78;
 static COLS: uint = 20;
@@ -6,11 +6,12 @@ static COLS: uint = 20;
 type Grid = [[u8, ..ROWS], ..COLS];
 type GhostGrid = [[u8, ..ROWS+2], ..COLS+2];
 
+// TODO: can I keep `grid` not-mut?
 /**
  * A virtual grid that includes wrapped edges, so that we don't have to
  * do funky modulo arithmetic.
  */
-fn update_ghost(grid: &Grid, ghost_grid: &GhostGrid) -> () {
+fn update_ghost(grid: &mut Grid, ghost_grid: &mut GhostGrid) -> () {
 	/* Copy bottom of grid to top of ghost_grid */
 	for n in range(0u, ROWS) {
 		ghost_grid[n+1][0] = grid[n+1][COLS-1];
@@ -29,13 +30,14 @@ fn update_ghost(grid: &Grid, ghost_grid: &GhostGrid) -> () {
 	}
 
 	/* Wrap ghost_grid left and right columns */
-	for n in range(0u, COLS+2) {
+	for y in range(0u, COLS+2) {
 		ghost_grid[0][y] = ghost_grid[ROWS+2-2][y];
 		ghost_grid[ROWS+2-2][y] = ghost_grid[1][y];
 	}
 }
 
-fn count_neighbors(x: uint, y: uint, ghost_grid: &GhostGrid) -> uint {
+// TODO: can I keep this not-mut?
+fn count_neighbors(x: uint, y: uint, ghost_grid: &mut GhostGrid) -> u8 {
 	ghost_grid[(x-1)+1][(y-1)+1] + ghost_grid[(x)+1][(y-1)+1] + ghost_grid[(x+1)+1][(y-1)+1] +
 	ghost_grid[(x-1)+1][(y)+1  ]                              + ghost_grid[(x+1)+1][(y)+1  ] +
 	ghost_grid[(x-1)+1][(y+1)+1] + ghost_grid[(x)+1][(y+1)+1] + ghost_grid[(x+1)+1][(y+1)+1]
@@ -47,14 +49,14 @@ fn pretty_print(grid: &Grid) -> () {
 			if(grid[x][y] == 0) {
 				print!(" ");
 			} else {
-				print!("#");
+				print!("{}", "#");
 			}
 		}
 		print!("\n");
 	}
 }
 
-fn next_gen(grid: &Grid, ghost_grid: &GhostGrid) -> () {
+fn next_gen(grid: &mut Grid, ghost_grid: &mut GhostGrid) -> () {
 	for y in range(0u, COLS) {
 		for x in range(0u, ROWS) {
 			let neighbors = count_neighbors(x, y, ghost_grid);
@@ -70,22 +72,20 @@ fn next_gen(grid: &Grid, ghost_grid: &GhostGrid) -> () {
 }
 
 fn main() {
-	let grid: Grid;
-	let ghost_grid: GhostGrid;
+	let mut grid: Grid = [[0, ..ROWS], ..COLS];
+	let mut ghost_grid: GhostGrid = [[0, ..ROWS+2], ..COLS+2];
 
 	/* Generate a random grid */
 	for y in range(0u, COLS) {
 		for x in range(0u, ROWS) {
-			grid[x][y] = random() % 2;
+			grid[x][y] = (rand::random::<uint>() % 2) as u8;
 		}
 	}
 
-	pretty_print(grid);
-	update_ghost(grid, ghost_grid);
+	update_ghost(&mut grid, &mut ghost_grid);
 
-	let iterations: uint = 1000000;
-
-	while iterations-- {
-		next_gen(grid, ghost_grid);
+	for _ in range(0, 1000000) {
+		pretty_print(&grid);
+		next_gen(&mut grid, &mut ghost_grid);
 	}
 }
