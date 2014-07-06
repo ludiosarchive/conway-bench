@@ -45,9 +45,9 @@ static int count_neighbors(int x, int y, GRID_TYPE ghost_grid[COLS+2][ROWS+2]) {
 		ghost_grid[(x-1)+1][(y+1)+1] + ghost_grid[(x)+1][(y+1)+1] + ghost_grid[(x+1)+1][(y+1)+1];
 }
 
-static int get_random(N) {
+static int get_random(int n) {
 	int val;
-	while (N <= (val = rand() / (RAND_MAX/N)));
+	while (n <= (val = rand() / (RAND_MAX/n)));
 	return val;
 }
 
@@ -98,8 +98,6 @@ int main() {
 	int character;
 	int x;
 	int y;
-
-	srand(time(0));
 
 	/* Generate a random grid */
 	for(y=0; y <= ROWS-1; y++) {

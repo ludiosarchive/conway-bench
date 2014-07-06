@@ -80,8 +80,7 @@ static void next_gen(short grid[][], short ghost_grid[][]) {
 	update_ghost(grid, ghost_grid);
 }
 
-
-public static void main(String[] args) {
+static void run_once() {
 	short grid[][] = new short[ROWS][COLS];
 	short ghost_grid[][] = new short[ROWS+2][COLS+2];
 	int character;
@@ -107,6 +106,15 @@ public static void main(String[] args) {
 
 		next_gen(grid, ghost_grid);
 	}
+}
+
+public static void main(String[] args) {
+	run_once();
+	System.err.println("Warmed up.");
+	long start = System.currentTimeMillis();
+	run_once();
+	long end = System.currentTimeMillis();
+	System.err.println("Ran in " + (end - start) + "ms");
 }
 
 }
