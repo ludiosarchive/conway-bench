@@ -16,12 +16,12 @@ static void update_ghost(GRID_TYPE grid[COLS][ROWS], GRID_TYPE ghost_grid[COLS+2
 
 	/* Copy bottom of grid to top of ghost_grid */
 	for(n=0; n <= COLS-1; n++) {
-		ghost_grid[n+1][0] = grid[n+1][ROWS-1];
+		ghost_grid[n+1][0] = grid[n][ROWS-1];
 	}
 
 	/* Copy top of grid to bottom of ghost_grid */
 	for(n=0; n <= COLS-1; n++) {
-		ghost_grid[n+1][ROWS+2-1] = grid[n+1][0];
+		ghost_grid[n+1][ROWS+2-1] = grid[n][0];
 	}
 
 	/* Copy the rest of grid to ghost_grid */
