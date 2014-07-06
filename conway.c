@@ -6,7 +6,7 @@
 
 #define GRID_TYPE unsigned short int
 
-void update_ghost(GRID_TYPE grid[ROWS][COLS], GRID_TYPE ghost_grid[ROWS+2][COLS+2]) {
+static void update_ghost(GRID_TYPE grid[ROWS][COLS], GRID_TYPE ghost_grid[ROWS+2][COLS+2]) {
 	/*
 	A virtual grid that includes wrapped edges, so that we don't have to
 	do funky modulo arithmetic.
@@ -38,35 +38,42 @@ void update_ghost(GRID_TYPE grid[ROWS][COLS], GRID_TYPE ghost_grid[ROWS+2][COLS+
 	}
 }
 
-int count_neighbors(int x, int y, GRID_TYPE ghost_grid[ROWS+2][COLS+2]) {
+static int count_neighbors(int x, int y, GRID_TYPE ghost_grid[ROWS+2][COLS+2]) {
 	return \
 		ghost_grid[(x-1)+1][(y-1)+1] + ghost_grid[(x)+1][(y-1)+1] + ghost_grid[(x+1)+1][(y-1)+1] + \
 		ghost_grid[(x-1)+1][(y)+1  ]                              + ghost_grid[(x+1)+1][(y)+1  ] + \
 		ghost_grid[(x-1)+1][(y+1)+1] + ghost_grid[(x)+1][(y+1)+1] + ghost_grid[(x+1)+1][(y+1)+1];
 }
 
-int get_random(N) {
+static int get_random(N) {
 	int val;
 	while (N <= (val = rand() / (RAND_MAX/N)));
 	return val;
 }
 
-void pretty_print(GRID_TYPE grid[ROWS][COLS]) {
+static void pretty_print(GRID_TYPE grid[ROWS][COLS]) {
 	int x, y;
+
+	char out[(ROWS+1)*COLS];
+	int out_i = 0;
 
 	for(y=0; y <= COLS-1; y++) {
 		for(x=0; x <= ROWS-1; x++) {
 			if(grid[x][y] == 0) {
-				printf(" ");
+				out[out_i] = ' ';
+				out_i += 1;
 			} else {
-				printf("#");
+				out[out_i] = '#';
+				out_i += 1;
 			}
 		}
-		printf("\n");
+		out[out_i] = '\n';
+		out_i += 1;
 	}
+	puts(out);
 }
 
-void next_gen(GRID_TYPE grid[ROWS][COLS], GRID_TYPE ghost_grid[ROWS+2][COLS+2]) {
+static void next_gen(GRID_TYPE grid[ROWS][COLS], GRID_TYPE ghost_grid[ROWS+2][COLS+2]) {
 	int neighbors, x, y;
 	for(y=0; y <= COLS-1; y++) {
 		for(x=0; x <= ROWS-1; x++) {
@@ -82,6 +89,8 @@ void next_gen(GRID_TYPE grid[ROWS][COLS], GRID_TYPE ghost_grid[ROWS+2][COLS+2]) 
 	update_ghost(grid, ghost_grid);
 }
 
+
+static struct timespec wait = {0, 160 * 1000 * 1000};
 
 int main() {
 	GRID_TYPE grid[ROWS][COLS];
@@ -102,11 +111,12 @@ int main() {
 	pretty_print(grid);
 	update_ghost(grid, ghost_grid);
 
-	int iterations = 100000;
+	int iterations = 50000;
 
 	while(iterations--) {
-		//printf("\n\n\n");
-		//pretty_print(grid);
+		puts("\n\n\n");
+		pretty_print(grid);
+		//nanosleep(&wait, NULL);
 
 		next_gen(grid, ghost_grid);
 	}

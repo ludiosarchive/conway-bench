@@ -82,9 +82,9 @@ fn main() {
 
 	update_ghost(&grid, &mut ghost_grid);
 
-	for _ in range(0, 100000) {
-		//print!("\n\n\n");
-		//pretty_print(&grid);
+	for _ in range(0, 50000) {
+		print!("\n\n\n");
+		pretty_print(&grid);
 		//std::io::timer::sleep(140);
 		next_gen(&mut grid, &mut ghost_grid);
 	}
