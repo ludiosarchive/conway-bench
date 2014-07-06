@@ -1,4 +1,6 @@
 extern crate rand;
+use std::io::stdio;
+use std::str;
 
 static ROWS: uint = 177;
 static COLS: uint = 60;
@@ -42,15 +44,24 @@ fn count_neighbors(x: uint, y: uint, ghost_grid: &GhostGrid) -> u8 {
 }
 
 fn pretty_print(grid: &Grid) -> () {
+	let mut out: [u8, ..((COLS+1)*ROWS)] = [0, ..((COLS+1)*ROWS)];
+	let mut out_i: uint = 0;
 	for y in range(0u, COLS) {
 		for x in range(0u, ROWS) {
 			if grid[y][x] == 0 {
-				print!(" ");
+				out[out_i] = ' ' as u8;
+				out_i += 1;
 			} else {
-				print!("{}", "#");
+				out[out_i] = '#' as u8;
+				out_i += 1;
 			}
 		}
-		print!("\n");
+		out[out_i] = '\n' as u8;
+		out_i += 1;
+	}
+	unsafe {
+		let s = str::raw::from_utf8(out);
+		stdio::print(s);
 	}
 }
 
@@ -83,9 +94,9 @@ fn main() {
 	update_ghost(&grid, &mut ghost_grid);
 
 	for _ in range(0, 50000) {
-		print!("\n\n\n");
+		stdio::print("\n\n\n");
 		pretty_print(&grid);
-		//std::io::timer::sleep(140);
+		//std::io::timer::sleep(160);
 		next_gen(&mut grid, &mut ghost_grid);
 	}
 }
