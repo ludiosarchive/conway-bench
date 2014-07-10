@@ -4,7 +4,7 @@ import random
 
 COLS = 177
 ROWS = 60
-EMPTY_OUT = ((" " * COLS) + "\n") * ROWS
+EMPTY_OUT = " " * ((COLS+1)*ROWS)
 
 def update_ghost(grid, ghost_grid):
 	"""
@@ -42,8 +42,14 @@ def pretty_print(grid):
 
 	for y in xrange(ROWS):
 		for x in xrange(COLS):
-			if grid[y][x] == 1:
-				out[x + ((COLS + 1) * y)] = '#'
+			if grid[y][x] == 0:
+				out[out_i] = ' '
+				out_i += 1
+			else:
+				out[out_i] = '#'
+				out_i += 1
+		out[out_i] = '\n'
+		out_i += 1
 	sys.stdout.write(out)
 
 def next_gen(grid, ghost_grid):
