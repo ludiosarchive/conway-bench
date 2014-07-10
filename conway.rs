@@ -15,12 +15,12 @@ type GhostGrid = [[u8, ..COLS+1+2], ..ROWS+1+2];
 fn update_ghost(grid: &Grid, ghost_grid: &mut GhostGrid) -> () {
 	/* Copy bottom of grid to top of ghost_grid */
 	for n in range(0u, COLS) {
-		ghost_grid[0][n+1] = grid[ROWS-1][n+1];
+		ghost_grid[0][n+1] = grid[ROWS-1][n];
 	}
 
 	/* Copy top of grid to bottom of ghost_grid */
 	for n in range(0u, COLS) {
-		ghost_grid[ROWS+2-1][n+1] = grid[0][n+1];
+		ghost_grid[ROWS+2-1][n+1] = grid[0][n];
 	}
 
 	/* Copy the rest of grid to ghost_grid */
