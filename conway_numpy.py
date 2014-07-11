@@ -76,7 +76,7 @@ def run_once():
 	pretty_print(grid)
 	update_ghost(grid, ghost_grid)
 
-	for i in xrange(5000):
+	for i in xrange(50000):
 		sys.stdout.write("\n\n\n")
 		pretty_print(grid)
 		#nanosleep(&wait, NULL)
