@@ -5,8 +5,8 @@ use std::str;
 static COLS: uint = 177;
 static ROWS: uint = 60;
 
-type Grid = [[u8, ..COLS+1], ..ROWS+1];
-type GhostGrid = [[u8, ..COLS+1+2], ..ROWS+1+2];
+type Grid = [[u8, ..COLS], ..ROWS];
+type GhostGrid = [[u8, ..COLS+2], ..ROWS+2];
 
 /**
  * A virtual grid that includes wrapped edges, so that we don't have to
@@ -44,7 +44,8 @@ fn count_neighbors(x: uint, y: uint, ghost_grid: &GhostGrid) -> u8 {
 }
 
 fn pretty_print(grid: &Grid) -> () {
-	let mut out: [u8, ..((ROWS+1)*COLS)] = [0, ..((ROWS+1)*COLS)];
+	// COLS+1 for the newline
+	let mut out: [u8, ..(ROWS*(COLS+1))] = [0, ..(ROWS*(COLS+1))];
 	let mut out_i: uint = 0;
 	for y in range(0u, ROWS) {
 		for x in range(0u, COLS) {
@@ -81,8 +82,8 @@ fn next_gen(grid: &mut Grid, ghost_grid: &mut GhostGrid) -> () {
 }
 
 fn main() {
-	let mut grid: Grid = [[0, ..COLS+1], ..ROWS+1];
-	let mut ghost_grid: GhostGrid = [[0, ..COLS+1+2], ..ROWS+1+2];
+	let mut grid: Grid = [[0, ..COLS], ..ROWS];
+	let mut ghost_grid: GhostGrid = [[0, ..COLS+2], ..ROWS+2];
 
 	/* Generate a random grid */
 	for y in range(0u, ROWS) {
