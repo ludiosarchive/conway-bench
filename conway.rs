@@ -1,5 +1,6 @@
 extern crate rand;
 use std::io::stdio;
+use std::rand;
 use std::str;
 
 static COLS: uint = 177;
@@ -94,7 +95,7 @@ fn main() {
 
 	update_ghost(&grid, &mut ghost_grid);
 
-	for _ in range(0, 50000) {
+	for _ in range(0u, 50000) {
 		stdio::print("\n\n\n");
 		pretty_print(&grid);
 		//std::io::timer::sleep(160);
