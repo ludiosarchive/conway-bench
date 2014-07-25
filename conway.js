@@ -115,7 +115,7 @@ var main = function() {
 	var start = Date.now();
 	run_once()
 	var end = Date.now();
-	process.stderr.write("Ran in" + (end - start) + "ms");
+	process.stderr.write("Ran in " + (end - start) + "ms");
 }
 
 main();
