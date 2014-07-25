@@ -89,8 +89,8 @@ var run_once = function() {
 	var y;
 
 	/* Generate a random grid */
-	for(y=0; y <= ROWS-1; y++) {
-		for(x=0; x <= COLS-1; x++) {
+	for(y=0; y < ROWS; y++) {
+		for(x=0; x < COLS; x++) {
 			grid[y][x] = Math.floor(Math.random() * 2);
 		}
 	}
