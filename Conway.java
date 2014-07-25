@@ -31,7 +31,7 @@ static void update_ghost(short grid[][], short ghost_grid[][]) {
 	/* Wrap ghost_grid left and right columns */
 	for(y=0; y <= ROWS+2-1; y++) {
 		ghost_grid[y][0] = ghost_grid[y][COLS+2-2];
-		ghost_grid[y][COLS+2-2] = ghost_grid[y][1];
+		ghost_grid[y][COLS+2-1] = ghost_grid[y][1];
 	}
 }
 

@@ -21,7 +21,7 @@ var update_ghost = function(grid, ghost_grid) {
 
 	/* Copy the rest of grid to ghost_grid */
 	for(y=0; y < ROWS; y++) {
-		for(x=0; x <= COLS-1; x++) {
+		for(x=0; x < COLS; x++) {
 			ghost_grid[y+1][x+1] = grid[y][x];
 		}
 	}
@@ -29,7 +29,7 @@ var update_ghost = function(grid, ghost_grid) {
 	/* Wrap ghost_grid left and right columns */
 	for(y=0; y < ROWS+2; y++) {
 		ghost_grid[y][0] = ghost_grid[y][COLS+2-2];
-		ghost_grid[y][COLS+2-2] = ghost_grid[y][1];
+		ghost_grid[y][COLS+2-1] = ghost_grid[y][1];
 	}
 }
 

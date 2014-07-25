@@ -26,9 +26,10 @@ def update_ghost(grid, ghost_grid):
 			ghost_grid[y+1][x+1] = grid[y][x]
 
 	# Wrap ghost_grid left and right columns
+	# (Read from ghost_grid instead of grid because we need to get the corners right too.)
 	for y in xrange(ROWS+2):
 		ghost_grid[y][0] = ghost_grid[y][COLS+2-2]
-		ghost_grid[y][COLS+2-2] = ghost_grid[y][1]
+		ghost_grid[y][COLS+2-1] = ghost_grid[y][1]
 
 def count_neighbors(x, y, ghost_grid):
 	return \

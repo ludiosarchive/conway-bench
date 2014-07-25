@@ -34,7 +34,7 @@ fn update_ghost(grid: &Grid, ghost_grid: &mut GhostGrid) -> () {
 	/* Wrap ghost_grid left and right columns */
 	for y in range(0u, ROWS+2) {
 		ghost_grid[y][0] = ghost_grid[y][COLS+2-2];
-		ghost_grid[y][COLS+2-2] = ghost_grid[y][1];
+		ghost_grid[y][COLS+2-1] = ghost_grid[y][1];
 	}
 }
 
