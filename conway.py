@@ -70,7 +70,7 @@ def run_once():
 	# Generate a random grid
 	for y in xrange(ROWS):
 		for x in xrange(COLS):
-			grid[y][x] = random.randint(0, 2)
+			grid[y][x] = random.randint(0, 1)
 
 	pretty_print(grid)
 	update_ghost(grid, ghost_grid)
