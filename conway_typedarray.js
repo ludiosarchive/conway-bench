@@ -40,24 +40,24 @@ var count_neighbors = function(x, y, ghost_grid) {
 		ghost_grid.get((y+1)+1, (x-1)+1) + ghost_grid.get((y+1)+1, (x)+1) + ghost_grid.get((y+1)+1, (x+1)+1));
 }
 
-var out = Array((COLS+1)*ROWS);
+var out = new Buffer((COLS+1)*ROWS);
 var pretty_print = function(grid) {
 	var x, y;
 	var out_i = 0;
 	for(y=0; y <= ROWS-1; y++) {
 		for(x=0; x <= COLS-1; x++) {
 			if(grid.get(y, x) == 0) {
-				out[out_i] = " ";
+				out[out_i] = 32; // " "
 				out_i += 1;
 			} else {
-				out[out_i] = "#";
+				out[out_i] = 35; // "#"
 				out_i += 1;
 			}
 		}
-		out[out_i] = "\n";
+		out[out_i] = 10; // "\n"
 		out_i += 1;
 	}
-	process.stdout.write(out.join(''));
+	process.stdout.write(out);
 }
 
 var next_gen = function(grid, ghost_grid) {
