@@ -83,7 +83,7 @@ var next_gen = function(grid, ghost_grid) {
 }
 
 var make_grid = function(width, height) {
-	return Int8Array(width * height);
+	return Array(width * height);
 }
 
 var run_once = function() {

@@ -95,7 +95,7 @@ fn main() {
 
 	update_ghost(&grid, &mut ghost_grid);
 
-	for _ in range(0u, 50000) {
+	for _ in range(0u, 10000) {
 		stdio::print("\n\n\n");
 		pretty_print(&grid);
 		//std::io::timer::sleep(160);

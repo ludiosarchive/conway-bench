@@ -97,7 +97,7 @@ static void run_once() {
 	pretty_print(grid);
 	update_ghost(grid, ghost_grid);
 
-	int iterations = 50000;
+	int iterations = 10000;
 
 	while(iterations-- > 0) {
 		System.out.print("\n\n\n");

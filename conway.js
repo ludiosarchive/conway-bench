@@ -98,7 +98,7 @@ var run_once = function() {
 	pretty_print(grid);
 	update_ghost(grid, ghost_grid);
 
-	var iterations = 50000;
+	var iterations = 10000;
 
 	while(iterations--) {
 		process.stdout.write("\n\n\n");
