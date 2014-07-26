@@ -29,20 +29,24 @@ var update_ghost = function (grid, ghost_grid) {
 var count_neighbors = function (x, y, ghost_grid) {
     return ghost_grid[(y - 1 + 1) * COLS + (x - 1 + 1)] + ghost_grid[(y - 1 + 1) * COLS + (x + 1)] + ghost_grid[(y - 1 + 1) * COLS + (x + 1 + 1)] + ghost_grid[(y + 1) * COLS + (x - 1 + 1)] + ghost_grid[(y + 1) * COLS + (x + 1 + 1)] + ghost_grid[(y + 1 + 1) * COLS + (x - 1 + 1)] + ghost_grid[(y + 1 + 1) * COLS + (x + 1)] + ghost_grid[(y + 1 + 1) * COLS + (x + 1 + 1)];
 };
+var out = Array((COLS + 1) * ROWS);
 var pretty_print = function (grid) {
     var x, y;
-    var out = '';
+    var out_i = 0;
     for (y = 0; y <= ROWS - 1; y++) {
         for (x = 0; x <= COLS - 1; x++) {
             if (grid[y * COLS + x] == 0) {
-                out += ' ';
+                out[out_i] = ' ';
+                out_i += 1;
             } else {
-                out += '#';
+                out[out_i] = '#';
+                out_i += 1;
             }
         }
-        out += '\n';
+        out[out_i] = '\n';
+        out_i += 1;
     }
-    process.stdout.write(out);
+    process.stdout.write(out.join(''));
 };
 var next_gen = function (grid, ghost_grid) {
     var neighbors, x, y;
@@ -75,7 +79,7 @@ var run_once = function () {
     }
     pretty_print(grid);
     update_ghost(grid, ghost_grid);
-    var iterations = 5000;
+    var iterations = 10000;
     while (iterations--) {
         process.stdout.write('\n\n\n');
         pretty_print(grid);
