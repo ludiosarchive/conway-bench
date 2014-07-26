@@ -1,6 +1,14 @@
 var COLS = 177;
 var ROWS = 60;
 
+macro GET2D {
+	rule { ( $obj:expr, $y:expr, $x:expr ) } => { $obj[($y*COLS) + $x] }
+}
+
+macro SET2D {
+	rule { ( $obj:expr, $y:expr, $x:expr, $val:expr ) } => { $obj[($y*COLS) + $x] = $val }
+}
+
 var update_ghost = function(grid, ghost_grid) {
 	/*
 	A virtual grid that includes wrapped edges, so that we don't have to
@@ -11,33 +19,33 @@ var update_ghost = function(grid, ghost_grid) {
 
 	/* Copy bottom of grid to top of ghost_grid */
 	for(n=0; n < COLS; n++) {
-		ghost_grid.set(0, n+1, grid.get(ROWS-1, n));
+		SET2D(ghost_grid, 0, n+1, GET2D(grid, ROWS-1, n));
 	}
 
 	/* Copy top of grid to bottom of ghost_grid */
 	for(n=0; n < COLS; n++) {
-		ghost_grid.set(ROWS+2-1, n+1, grid.get(0, n));
+		SET2D(ghost_grid, ROWS+2-1, n+1, GET2D(grid, 0, n));
 	}
 
 	/* Copy the rest of grid to ghost_grid */
 	for(y=0; y < ROWS; y++) {
 		for(x=0; x < COLS; x++) {
-			ghost_grid.set(y+1, x+1, grid.get(y, x));
+			SET2D(ghost_grid, y+1, x+1, GET2D(grid, y, x));
 		}
 	}
 
 	/* Wrap ghost_grid left and right columns */
 	for(y=0; y < ROWS+2; y++) {
-		ghost_grid.set(y, 0, ghost_grid.get(y, COLS+2-2));
-		ghost_grid.set(y, COLS+2-1, ghost_grid.get(y, 1));
+		SET2D(ghost_grid, y, 0, GET2D(ghost_grid, y, COLS+2-2));
+		SET2D(ghost_grid, y, COLS+2-1, GET2D(ghost_grid, y, 1));
 	}
 }
 
 var count_neighbors = function(x, y, ghost_grid) {
 	return (
-		ghost_grid.get((y-1)+1, (x-1)+1) + ghost_grid.get((y-1)+1, (x)+1) + ghost_grid.get((y-1)+1, (x+1)+1) +
-		ghost_grid.get((y  )+1, (x-1)+1)                                  + ghost_grid.get((y  )+1, (x+1)+1) +
-		ghost_grid.get((y+1)+1, (x-1)+1) + ghost_grid.get((y+1)+1, (x)+1) + ghost_grid.get((y+1)+1, (x+1)+1));
+		GET2D(ghost_grid, (y-1)+1, (x-1)+1) + GET2D(ghost_grid, (y-1)+1, (x)+1) + GET2D(ghost_grid, (y-1)+1, (x+1)+1) +
+		GET2D(ghost_grid, (y  )+1, (x-1)+1)                                     + GET2D(ghost_grid, (y  )+1, (x+1)+1) +
+		GET2D(ghost_grid, (y+1)+1, (x-1)+1) + GET2D(ghost_grid, (y+1)+1, (x)+1) + GET2D(ghost_grid, (y+1)+1, (x+1)+1));
 }
 
 var pretty_print = function(grid) {
@@ -47,7 +55,7 @@ var pretty_print = function(grid) {
 
 	for(y=0; y <= ROWS-1; y++) {
 		for(x=0; x <= COLS-1; x++) {
-			if(grid.get(y, x) == 0) {
+			if(GET2D(grid, y, x) == 0) {
 				out += ' ';
 			} else {
 				out += '#';
@@ -65,9 +73,9 @@ var next_gen = function(grid, ghost_grid) {
 			neighbors = count_neighbors(x, y, ghost_grid);
 			//printf("N %d, ", neighbors);
 			if(neighbors < 2 || neighbors > 3) {
-				grid.set(y, x, 0);
+				SET2D(grid, y, x, 0);
 			} else if(neighbors == 3) {
-				grid.set(y, x, 1);
+				SET2D(grid, y, x, 1);
 			}
 		}
 	}
@@ -75,11 +83,7 @@ var next_gen = function(grid, ghost_grid) {
 }
 
 var make_grid = function(width, height) {
-	var arr = Uint8Array(width * height);
-	return {
-		get: function(y, x) { return arr[y*COLS + x]; },
-		set: function(y, x, val) { arr[y*COLS + x] = val; },
-	}
+	return Int8Array(width * height);
 }
 
 var run_once = function() {
@@ -91,7 +95,7 @@ var run_once = function() {
 	/* Generate a random grid */
 	for(y=0; y < ROWS; y++) {
 		for(x=0; x < COLS; x++) {
-			grid.set(y, x, Math.floor(Math.random() * 2));
+			SET2D(grid, y, x, Math.floor(Math.random() * 2));
 		}
 	}
 
