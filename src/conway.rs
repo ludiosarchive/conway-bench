@@ -1,7 +1,5 @@
 extern crate rand;
-use std::io::{self, Write};
-use std::str;
-use rand::Rng;
+use std::io::{Write};
 
 const COLS: usize = 177;
 const ROWS: usize = 60;
@@ -10,7 +8,7 @@ type Grid = [[u8; COLS]; ROWS];
 type GhostGrid = [[u8; COLS+2]; ROWS+2];
 
 fn print(s: &[u8]) {
-	std::io::stdout().write(s);
+	let _ = std::io::stdout().write(s);
 }
 
 /**
