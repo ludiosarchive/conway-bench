@@ -43,9 +43,9 @@ fn update_ghost(grid: &Grid, ghost_grid: &mut GhostGrid) -> () {
 }
 
 fn count_neighbors(x: usize, y: usize, ghost_grid: &GhostGrid) -> u8 {
-   ghost_grid[(y-1)+1][(x-1)+1] + ghost_grid[(y-1)+1][(x)+1] + ghost_grid[(y-1)+1][(x+1)+1] +
-   ghost_grid[(y)+1  ][(x-1)+1]                              + ghost_grid[(y)+1  ][(x+1)+1] +
-   ghost_grid[(y+1)+1][(x-1)+1] + ghost_grid[(y+1)+1][(x)+1] + ghost_grid[(y+1)+1][(x+1)+1]
+	ghost_grid[y-1][x-1] + ghost_grid[y-1][x] + ghost_grid[y-1][x+1] +
+	ghost_grid[  y][x-1]                      + ghost_grid[y  ][x+1] +
+	ghost_grid[y+1][x-1] + ghost_grid[y+1][x] + ghost_grid[y+1][x+1]
 }
 
 fn pretty_print(grid: &Grid) -> () {
@@ -71,7 +71,7 @@ fn pretty_print(grid: &Grid) -> () {
 fn next_gen(grid: &mut Grid, ghost_grid: &mut GhostGrid) -> () {
 	for y in 0..ROWS {
 		for x in 0..COLS {
-			let neighbors = count_neighbors(x, y, ghost_grid);
+			let neighbors = count_neighbors(x + 1, y + 1, ghost_grid);
 			//print!("N %d, ", neighbors);
 			if neighbors < 2 || neighbors > 3 {
 				grid[y][x] = 0;
