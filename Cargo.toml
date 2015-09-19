@@ -1,0 +1,16 @@
+[package]
+name = "conway"
+version = "15.9.19"
+
+[dependencies]
+rand = "0.3.11"
+
+[[bin]]
+name = "conway"
+
+[profile.dev]
+opt-level = 3
+lto = true
+no-stack-check = true
+target-cpu = "native"
+no-landing-pads = true
