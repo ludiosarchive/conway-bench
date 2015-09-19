@@ -1,10 +1,25 @@
+from __future__ import print_function
+
 import sys
 import time
 import random
 
 COLS = 177
 ROWS = 60
-EMPTY_OUT = " " * ((COLS+1)*ROWS)
+EMPTY_OUT = b" " * ((COLS+1)*ROWS)
+
+try:
+	xrange
+except NameError:
+	xrange = range
+
+try:
+	sys.stdout.buffer
+	def write_out(b):
+		sys.stdout.buffer.write(b)
+except AttributeError:
+	def write_out(b):
+		sys.stdout.write(b)
 
 def update_ghost(grid, ghost_grid):
 	"""
@@ -37,21 +52,21 @@ def count_neighbors(x, y, ghost_grid):
 		ghost_grid[(y)+1  ][(x-1)+1]                              + ghost_grid[(y)+1  ][(x+1)+1] + \
 		ghost_grid[(y+1)+1][(x-1)+1] + ghost_grid[(y+1)+1][(x)+1] + ghost_grid[(y+1)+1][(x+1)+1]
 
-def pretty_print(grid):
+def pretty_print(grid, SP=b' ' if sys.version[0] == '2' else 32, HASH=b'#' if sys.version[0] == '2' else 35, NL=b'\n' if sys.version[0] == '2' else 10):
 	out = bytearray(EMPTY_OUT)
 	out_i = 0
 
 	for y in xrange(ROWS):
 		for x in xrange(COLS):
 			if grid[y][x] == 0:
-				out[out_i] = ' '
+				out[out_i] = SP
 				out_i += 1
 			else:
-				out[out_i] = '#'
+				out[out_i] = HASH
 				out_i += 1
-		out[out_i] = '\n'
+		out[out_i] = NL
 		out_i += 1
-	sys.stdout.write(out)
+	write_out(out)
 
 def next_gen(grid, ghost_grid):
 	for y in xrange(ROWS):
@@ -77,7 +92,7 @@ def run_once():
 	update_ghost(grid, ghost_grid)
 
 	for i in xrange(10000):
-		sys.stdout.write("\n\n\n")
+		write_out(b"\n\n\n")
 		pretty_print(grid)
 		#nanosleep(&wait, NULL)
 
@@ -85,11 +100,11 @@ def run_once():
 
 def main():
 	run_once()
-	print >>sys.stderr, "Warmed up."
+	print("Warmed up.", file=sys.stderr)
 	start = time.time()
 	run_once()
 	end = time.time()
-	print >>sys.stderr, "Ran in", (1000 * (end - start)), "ms"
+	print("Ran in", (1000 * (end - start)), "ms", file=sys.stderr)
 
 if __name__ == '__main__':
 	main()
