@@ -11,6 +11,3 @@ name = "conway"
 [profile.dev]
 opt-level = 3
 lto = true
-no-stack-check = true
-target-cpu = "native"
-no-landing-pads = true
