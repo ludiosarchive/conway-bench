@@ -1,1 +1,2 @@
-cargo rustc -- -C target-cpu=native -Z force-overflow-checks=off
+# --release has overflow checks disabled
+cargo rustc --release -- -C target-cpu=native
